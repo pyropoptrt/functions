@@ -14,6 +14,7 @@
     function error_for
     function selected
     function checked
+    function mkthumb
   */
 
   // grabs the first paragraph
@@ -102,5 +103,51 @@
     if(h($field) == "checked") {
       return " checked=\"yes\"";
     }
+  }
+  
+  // create a thumbnail
+  function mkthumb($filename, $max) {
+    $thumb_width = $max;
+    $thumb_height = $thumb_width;
+
+    // check extension
+    if(preg_match('/\.gif$/i', $filename)) {
+      $srcimage = imagecreatefromgif($filename);
+    } elseif (preg_match('/\.png$/i', $filename)) {
+      $srcimage = imagecreatefrompng($filename);
+    } else {
+    // assume jpg by default
+      $srcimage = imagecreatefromjpeg($filename);
+    }
+
+    // determine file dimensions
+    $width = imagesx($srcimage);
+    $height = imagesy($srcimage);
+
+    // check file dimensions
+    if(($height > $thumb_height) || ($width > $thumb_width)) {
+      // determine ratio for thumb dimensions
+      if($width > $height) {
+        $ratio = $thumb_width / $width;
+      } else {
+        $ratio = $thumb_height / $height;
+      }
+
+      // set thumb dimensions
+      $new_width = round($width * $ratio);
+      $new_height = round($height * $ratio);
+      $dest_image = ImageCreateTrueColor($new_width, $new_height);
+
+      imagecopyresampled($dest_image, $srcimage, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+
+      imagedestroy($srcimage);
+
+    } else {
+      // image is already the correct size
+      $dest_image = $srcimage;
+    }
+
+    imagejpeg($dest_image, $filename);
+    imagedestroy($dest_image);
   }
 ?>
