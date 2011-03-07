@@ -1,7 +1,8 @@
 <?php
   /*
     functions library
-  
+    
+    function show_errors
     function breaks
     function dberror
     function links
@@ -16,6 +17,11 @@
     function checked
     function mkthumb
   */
+  
+  // show php errors
+  function show_errors() {
+    ini_set("display_errors", "on");
+  }
 
   // grabs the first paragraph
   function breaks($content) {
@@ -31,7 +37,7 @@
 
   // format links as active
   function links($whatever, $title) {
-    if($title == "$whatever"){ echo " id=\"current\""; }
+    if($title == "$whatever"){ echo " class=\"active\""; }
   }
 
   // cleans input
