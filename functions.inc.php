@@ -94,7 +94,7 @@
   // returns error text for forms
   function error_for($name) {
     global $errors;
-    return "<div class=\"error\">". $errors[$name] ."</div>";
+    return "<br /> <div class=\"error\">". $errors[$name] ."</div>";
   }
   
   // selected from drop down
