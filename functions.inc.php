@@ -37,7 +37,7 @@
 
   // format links as active
   function links($whatever, $title) {
-    if($title == "$whatever"){ echo " class=\"active\""; }
+    if(stristr($whatever, $title)){ echo " class=\"active\""; }
   }
 
   // cleans input
