@@ -95,7 +95,7 @@
   function error_for($name) {
     global $errors;
     
-    if(!empty($errors['name'])) {
+    if(!empty($errors[$name])) {
       return "<br /> <div class=\"error\">". $errors[$name] ."</div>";
     }
   }
