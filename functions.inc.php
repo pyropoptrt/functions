@@ -11,6 +11,7 @@
     function findext
     function sanitize
     function h
+    function text
     function form_row_class
     function error_for
     function selected
@@ -84,6 +85,17 @@
   // escape out any special html characters
   function h($string) {
     return htmlspecialchars($string);
+  }
+  
+  // format our text
+  function text($text) {
+    // paragraphs and line breaks
+    $text = str_replace('\r\n', '\n', $text);
+    $text = str_replace('\r', '\n', $text);
+    $text = str_replace('\n\n', '</p><p>', $text);
+    $text = str_replace('\n', '<br />', $text);
+    
+    return $text;
   }
   
   function form_row_class($name) {
