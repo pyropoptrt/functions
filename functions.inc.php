@@ -9,7 +9,8 @@
     function cleanname
     function findbase
     function findext
-    function sanitize
+    function clean
+    function strip
     function h
     function text
     function form_row_class
@@ -80,6 +81,11 @@
   // sanitize the user input
   function clean($string) {
     return mysql_real_escape_string($string);
+  }
+  
+  // sanitize the user input (strip tags)
+  function strip($string) {
+    return mysql_real_escape_string(strip_tags($string));
   }
   
   // escape out any special html characters
