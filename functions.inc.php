@@ -14,6 +14,7 @@
     function strip
     function h
     function text
+    function headline
     function form_row_class
     function error_for
     function selected
@@ -110,6 +111,20 @@
     $text = str_replace('\n', '<br />', $text);
     
     return $text;
+  }
+  
+  // format a headline for url
+  function headline($headline) {
+    // strip out bad characters
+    $headline = str_replace("'", "", $headline);
+    $headline = str_replace(" ", "-", $headline);
+    $headline = str_replace("?", "-", $headline);
+    $headline = str_replace("&amp;", "-", $headline);
+    $headline = str_replace("&", "-", $headline);
+    $headline = str_replace("---", "-", $headline);
+    $headline = str_replace("--", "-", $headline);
+    
+    return $headline;
   }
   
   function form_row_class($name) {
