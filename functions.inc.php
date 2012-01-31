@@ -41,7 +41,6 @@
   
   // display a canonical url on our pages
   function canonical($url) {
-    $canon = $url . $_SERVER['REQUEST_URI'];
     
     return $canon;
   }
