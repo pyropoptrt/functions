@@ -5,6 +5,7 @@
     function show_errors
     function breaks
     function dberror
+    function canonical
     function links
     function cleanname
     function findbase
@@ -35,6 +36,13 @@
   // check if there was a mysql query error
   function dberror($db_call) {
     if(!$db_call) { die("<p>There was an error retrieving information from the database. Error: ". mysql_error() ."</p>\n"); }
+  }
+  
+  // display a canonical url on our pages
+  function canonical($url) {
+    $canon = $url . $_SERVER['REQUEST_URI'];
+    
+    return $canon;
   }
 
   // format links as active
