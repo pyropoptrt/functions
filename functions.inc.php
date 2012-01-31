@@ -41,6 +41,7 @@
   
   // display a canonical url on our pages
   function canonical($url) {
+    $canon = "<link rel=\"canonical\" href=\"". $url . $_SERVER['REQUEST_URI'] ."\" />\n";
     
     return $canon;
   }
@@ -115,13 +116,17 @@
   // format a headline for url
   function headline($headline) {
     // strip out bad characters
-    $headline = str_replace("'", "", $headline);
+    $headline = str_replace("'s", "s", $headline);
+    $headline = str_replace("'d", "d", $headline);
+    $headline = str_replace("'t", "t", $headline);
+    $headline = str_replace("'ll", "ll", $headline);
     $headline = str_replace(" ", "-", $headline);
     $headline = str_replace("?", "-", $headline);
     $headline = str_replace("&amp;", "-", $headline);
     $headline = str_replace("&", "-", $headline);
     $headline = str_replace("---", "-", $headline);
     $headline = str_replace("--", "-", $headline);
+    $headline = strtolower($headline);
     
     return $headline;
   }
