@@ -89,7 +89,7 @@
 
   // sanitize the user input
   function clean($string) {
-    return mysql_real_escape_string(htmlentities($string));
+    return mysql_real_escape_string($string);
   }
   
   // sanitize the user input (strip tags)
