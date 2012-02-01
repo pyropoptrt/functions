@@ -121,11 +121,22 @@
     $headline = str_replace("'t", "t", $headline);
     $headline = str_replace("'ll", "ll", $headline);
     $headline = str_replace(" ", "-", $headline);
-    $headline = str_replace("?", "-", $headline);
     $headline = str_replace("&amp;", "-", $headline);
+    $headline = str_replace("&ndash;", "-", $headline);
+    $headline = str_replace("&rsquo;", "-", $headline);
+    $headline = str_replace("&rdquo;", "-", $headline);
+    $headline = str_replace("&lsquo;", "-", $headline);
+    $headline = str_replace("&ldquo;", "-", $headline);
+    $headline = str_replace(",", "", $headline);
+    $headline = str_replace(";", "", $headline);
+    $headline = str_replace(":", "", $headline);
+    $headline = str_replace("!", "", $headline);
+    $headline = str_replace(".", "", $headline);
+    $headline = str_replace("?", "-", $headline);
     $headline = str_replace("&", "-", $headline);
     $headline = str_replace("---", "-", $headline);
     $headline = str_replace("--", "-", $headline);
+    $headline = stripslashes($headline);
     $headline = strtolower($headline);
     
     return $headline;
