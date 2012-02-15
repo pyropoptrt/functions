@@ -120,6 +120,7 @@
     $headline = str_replace("'d", "d", $headline);
     $headline = str_replace("'t", "t", $headline);
     $headline = str_replace("'ll", "ll", $headline);
+    $headline = str_replace("'", "", $headline);
     $headline = str_replace(" ", "-", $headline);
     $headline = str_replace("&amp;", "-", $headline);
     $headline = str_replace("&ndash;", "-", $headline);
