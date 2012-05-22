@@ -19,6 +19,9 @@
     function error_for
     function selected
     function checked
+    function blank_error
+    function blank_email
+    function blank_select
     function mkthumb
   */
   
@@ -168,6 +171,33 @@
   function checked($field) {
     if(h($field) == "checked") {
       return " checked=\"yes\"";
+    }
+  }
+  
+  // error handling for blank fields
+  function blank_error($field, $message) {
+    global $errors;
+    
+    if(0 === preg_match("/\S+/", $_POST[$field])) {
+      return $errors[$field] = "$message";
+    }
+  }
+  
+  // error handling - validate email somewhat
+  function blank_email($field) {
+    global $errors;
+    
+    if(0 === preg_match("/.+@.+\..+/", $_POST[$field])) {
+      return $errors[$field] = "Please enter a valid email address";
+    }
+  }
+  
+  // error handling - select/option fields
+  function blank_select($field, $message) {
+    global $errors;
+    
+    if ($_POST[$field] == "Please Select") {
+      return $errors[$field] = "$message";
     }
   }
   
