@@ -19,9 +19,8 @@
     function error_for
     function selected
     function checked
-    function blank_error
-    function blank_email
-    function blank_select
+    function error_email
+    function dater
     function mkthumb
   */
   
@@ -56,14 +55,14 @@
 
   // cleans input
   function cleanname($input) {
-    $input = stripslashes($input);
-    $input = str_replace("'", "", $input);
-    $input = str_replace(' ', '-', $input);
-    $input = str_replace('--', '-', $input);
-    $input = str_replace(array('!', '\\', '*', '?', '(', ')'), '', $input);
-    $input = preg_replace('/[^A-Za-z0-9_.-]/', '', $input);
+    // $input = stripslashes($input);
+    //     $input = str_replace("'", "", $input);
+    //     $input = str_replace(' ', '-', $input);
+    //     $input = str_replace('--', '-', $input);
+    //     $input = str_replace(array('!', '\\', '*', '?', '(', ')'), '', $input);
+    //     $input = preg_replace('/[^A-Za-z0-9_.-]/', '', $input);
 
-    return strtolower($input);
+    return strtolower(headline($input));
   }
 
 
@@ -140,6 +139,8 @@
     $headline = str_replace("&", "-", $headline);
     $headline = str_replace("---", "-", $headline);
     $headline = str_replace("--", "-", $headline);
+    $headline = str_replace(array('!', '\\', '*', '?', '(', ')'), '', $headline);
+    $headline = preg_replace('/[^A-Za-z0-9_.-]/', '', $headline);
     $headline = stripslashes($headline);
     $headline = strtolower($headline);
     
@@ -174,31 +175,25 @@
     }
   }
   
-  // error handling for blank fields
-  function blank_error($field, $message) {
-    global $errors;
-    
-    if(0 === preg_match("/\S+/", $_POST[$field])) {
-      return $errors[$field] = "$message";
-    }
+  // send an error email
+  function error_email($message) {
+    mail('lee.chavers@ergon.com', 'Database Error on Pool Car Request Form', $message, 'From: communications@ergon.com', '-f communications@ergon.com');
   }
   
-  // error handling - validate email somewhat
-  function blank_email($field) {
-    global $errors;
-    
-    if(0 === preg_match("/.+@.+\..+/", $_POST[$field])) {
-      return $errors[$field] = "Please enter a valid email address";
+  // format the date for mysql
+  function dater($date) {
+    $pm_pos     = strpos($date, "pm");
+    $date_str   = substr($date, 0, -2);
+    $date_exp   = explode(":", $date_str);
+    $final_time = substr($date_exp[0], -2);
+
+    if ($pm_pos != False && $final_time != "12") {
+      $final_time = $final_time + "12";
     }
-  }
-  
-  // error handling - select/option fields
-  function blank_select($field, $message) {
-    global $errors;
-    
-    if ($_POST[$field] == "Please Select") {
-      return $errors[$field] = "$message";
-    }
+
+    $final_date = substr($date_exp[0], 0, -2)." ". $final_time .":". rtrim($date_exp[1]) . ":00";
+
+    return $final_date;
   }
   
   // create a thumbnail
