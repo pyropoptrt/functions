@@ -133,6 +133,7 @@
     $headline = str_replace("&rdquo;", "-", $headline);
     $headline = str_replace("&lsquo;", "-", $headline);
     $headline = str_replace("&ldquo;", "-", $headline);
+    $headline = str_replace(".", "", $headline);
     $headline = str_replace(",", "", $headline);
     $headline = str_replace(";", "", $headline);
     $headline = str_replace(":", "", $headline);
@@ -166,7 +167,7 @@
   
   // selected from drop down
   function selected($field, $answer) {
-    if(h($field) == $answer) {
+    if(h($field) === $answer) {
       return " selected=\"selected\"";
     }
   }
