@@ -2,6 +2,7 @@
   /*
     functions library
     
+    function query
     function show_errors
     function breaks
     function dberror
@@ -26,6 +27,31 @@
     function dater
     function mkthumb
   */
+
+  // function for executing our queries to be more dry
+  function query($query, $params = NULL, $insert = NULL) {
+    $conn = pdo_connect();
+    $stmt = $conn->prepare($query);
+
+    // params
+    if (isset($params)) {
+      foreach ($params as $param => $p) {
+        $stmt->bindValue($param, $p);
+      }
+    }
+
+    try {
+      $stmt->execute();    
+    } catch (PDOException $e) {
+      $row = "Error: {$e}";
+    }
+
+    if (!isset($insert)) {
+      $row  = $stmt->fetchAll();
+    }
+    
+    return $row;
+  }
   
   // show php errors
   function show_errors() {
