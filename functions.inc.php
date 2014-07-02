@@ -1,7 +1,7 @@
 <?php
   /*
     functions library
-    
+
     function query
     function show_errors
     function breaks
@@ -41,18 +41,19 @@
     }
 
     try {
-      $stmt->execute();    
+      $stmt->execute();
     } catch (PDOException $e) {
       $row = "Error: {$e}";
     }
 
     if (!isset($insert)) {
       $row  = $stmt->fetchAll();
+      return $row;
+    } else {
+      return $conn;
     }
-    
-    return $row;
   }
-  
+
   // show php errors
   function show_errors() {
     ini_set("display_errors", "on");
@@ -64,16 +65,16 @@
 
     return $text[0];
   }
-  
+
   // check if there was a mysql query error
   function dberror($db_call) {
     if(!$db_call) { die("<p>There was an error retrieving information from the database. Error: ". mysql_error() ."</p>\n"); }
   }
-  
+
   // display a canonical url on our pages
   function canonical($url) {
     $canon = "<link rel=\"canonical\" href=\"". $url . $_SERVER['REQUEST_URI'] ."\" />\n";
-    
+
     return $canon;
   }
 
@@ -84,55 +85,43 @@
 
   // cleans input
   function cleanname($input) {
-    // $input = stripslashes($input);
-    //     $input = str_replace("'", "", $input);
-    //     $input = str_replace(' ', '-', $input);
-    //     $input = str_replace('--', '-', $input);
-    //     $input = str_replace(array('!', '\\', '*', '?', '(', ')'), '', $input);
-    //     $input = preg_replace('/[^A-Za-z0-9_.-]/', '', $input);
-
     return strtolower(headline($input));
   }
 
 
   // find the basename of a file
   function findbase($filename) {
-    $base = explode(".", $filename);
-    $count = (count($base)-1);
-    $i = 0;
-    while($i < $count) {
-        $returnbase=$returnbase . $base[$i] . ".";
-        $i++;
-    }
-    $returnbase = rtrim($returnbase, '.');
 
-    return cleanname($returnbase); // cleans the file basename
+    // return cleanname($returnbase); // cleans the file basename
+    $our_file     = headline(pathinfo($filename, PATHINFO_FILENAME));
+
+    return $our_file;
   }
 
   // finds the extension of a file
   function findext($filename) {
-    $base = explode(".", $filename);
-    $count = count($base)-1;
-    $ext = $count;
 
-    return ".".$base[$ext];
+    // return the file extension for our file
+    $our_file = "." . pathinfo($filename, PATHINFO_EXTENSION);
+
+    return $our_file;
   }
 
   // sanitize the user input
   function clean($string) {
     return mysql_real_escape_string($string);
   }
-  
+
   // sanitize the user input (strip tags)
   function strip($string) {
     return mysql_real_escape_string(strip_tags($string));
   }
-  
+
   // escape out any special html characters
   function h($string) {
     return htmlspecialchars($string);
   }
-  
+
   // format our text
   function text($text) {
     // paragraphs and line breaks
@@ -140,10 +129,10 @@
     $text = str_replace('\r', '\n', $text);
     $text = str_replace('\n\n', '</p><p>', $text);
     $text = str_replace('\n', '<br />', $text);
-    
+
     return $text;
   }
-  
+
   // format a headline for url
   function headline($headline) {
     // strip out bad characters
@@ -173,70 +162,70 @@
     $headline = preg_replace('/[^A-Za-z0-9_.-]/', '', $headline);
     $headline = stripslashes($headline);
     $headline = strtolower($headline);
-    
+
     return $headline;
   }
-  
+
   function form_row_class($name) {
     global $errors;
     return $errors[$name] ? "form_error_row" : "";
   }
-  
+
   // returns error text for forms
   function error_for($name) {
     global $errors;
-    
+
     if(!empty($errors[$name])) {
       return "<br /> <div class=\"error\">". $errors[$name] ."</div>";
     }
   }
-  
+
   // selected from drop down
   function selected($field, $answer) {
     if(h($field) === $answer) {
       return " selected=\"selected\"";
     }
   }
-  
+
   // checklist item is checked
   function checked($field) {
     if(h($field) == "checked") {
       return " checked=\"yes\"";
     }
   }
-  
+
   // error handling for blank fields
   function blank_error($field, $message) {
     global $errors;
-    
+
     if(0 === preg_match("/\S+/", $_POST[$field])) {
       return $errors[$field] = "$message";
     }
   }
-  
+
   // error handling - validate email somewhat
   function blank_email($field) {
     global $errors;
-    
+
     if(0 === preg_match("/.+@.+\..+/", $_POST[$field])) {
       return $errors[$field] = "Please enter a valid email address";
     }
   }
-  
+
   // error handling - select/option fields
   function blank_select($field, $message) {
     global $errors;
-    
+
     if ($_POST[$field] == "Please Select") {
       return $errors[$field] = "$message";
     }
   }
-  
+
   // send an error email
   function error_email($message) {
     mail('to email', 'subject', $message, 'From: reply email', '-f reply email');
   }
-  
+
   // format the date for mysql
   function dater($date) {
     $pm_pos     = strpos($date, "pm");
@@ -252,7 +241,7 @@
 
     return $final_date;
   }
-  
+
   // create a thumbnail
   function mkthumb($filename, $max) {
     $thumb_width = $max;
