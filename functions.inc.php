@@ -189,7 +189,7 @@
 
   // checklist item is checked
   function checked($field) {
-    if(h($field) == "checked") {
+    if(h(strtolower($field)) == "checked" || h(strtolower($field)) == "yes") {
       return " checked=\"yes\"";
     }
   }
