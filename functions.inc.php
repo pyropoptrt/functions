@@ -4,6 +4,7 @@
 
     function query
     function show_errors
+    function log_error_messages
     function breaks
     function dberror
     function canonical
@@ -58,6 +59,13 @@
   function show_errors() {
     ini_set("display_errors", "on");
   }
+
+    // This function will log our error messages to the apache/php error log file
+    // You can pass in a variable or an array
+    function log_error_messages($variable)
+    {
+        file_put_contents('php://stderr', print_r($variable, true));
+    }
 
   // grabs the first paragraph
   function breaks($content) {
